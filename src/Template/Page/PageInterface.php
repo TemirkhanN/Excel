@@ -2,6 +2,9 @@
 
 namespace Temirkhan\Excel\Template\Page;
 
+/**
+ * Page interface
+ */
 interface PageInterface
 {
     /**
@@ -12,6 +15,8 @@ interface PageInterface
     public function getTitle();
 
     /**
+     * Returns containing rows
+     *
      * @return RowInterface[]
      */
     public function getRows();

@@ -9,8 +9,6 @@ class Renderer implements RendererInterface
 {
     public function render(DocumentInterface $document)
     {
-        $usage = memory_get_usage();
-
         $excel = new XLSXWriter();
 
         foreach ($document->getPages() as $pageOrder => $page) {
@@ -26,7 +24,5 @@ class Renderer implements RendererInterface
         }
 
         $excel->writeToFile(__DIR__ . '/tablica.xlsx');
-
-        echo PHP_EOL . '#'.((memory_get_usage() - $usage)/1024/1024)."MB" . PHP_EOL;
     }
 }

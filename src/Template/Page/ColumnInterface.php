@@ -2,7 +2,9 @@
 
 namespace Temirkhan\Excel\Template\Page;
 
-
+/**
+ * Column interface
+ */
 interface ColumnInterface
 {
     /**
