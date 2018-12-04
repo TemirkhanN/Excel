@@ -2,6 +2,7 @@
 
 namespace Temirkhan\Excel\Writer;
 
+use RuntimeException;
 use Temirkhan\Excel\Template\DocumentInterface;
 use XLSXWriter;
 
@@ -24,5 +25,9 @@ class Writer implements WriterInterface
         }
 
         $excel->writeToFile($destinationPath);
+
+        if (!file_exists($destinationPath)) {
+            throw new RuntimeException(sprintf('Could not write document into "%s"', $destinationPath));
+        }
     }
 }
