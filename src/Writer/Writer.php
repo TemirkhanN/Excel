@@ -1,13 +1,13 @@
 <?php
 
-namespace Temirkhan\Excel\Renderer;
+namespace Temirkhan\Excel\Writer;
 
 use Temirkhan\Excel\Template\DocumentInterface;
 use XLSXWriter;
 
-class Renderer implements RendererInterface
+class Writer implements WriterInterface
 {
-    public function render(DocumentInterface $document)
+    public function write(DocumentInterface $document, $destinationPath)
     {
         $excel = new XLSXWriter();
 
@@ -23,6 +23,6 @@ class Renderer implements RendererInterface
             }
         }
 
-        $excel->writeToFile(__DIR__ . '/tablica.xlsx');
+        $excel->writeToFile($destinationPath);
     }
 }

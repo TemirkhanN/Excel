@@ -1,6 +1,6 @@
 <?php
 
-namespace Temirkhan\Excel\Renderer;
+namespace Temirkhan\Excel\Writer;
 
 use PHPUnit\Framework\TestCase;
 use Temirkhan\Excel\Template\DocumentInterface;
@@ -8,21 +8,55 @@ use Temirkhan\Excel\Template\Page\ColumnInterface;
 use Temirkhan\Excel\Template\Page\PageInterface;
 use Temirkhan\Excel\Template\Page\RowInterface;
 
-class RendererTest extends TestCase
+class WriterTest extends TestCase
 {
-    private $renderer;
+    private $writer;
 
     protected function setUp()
     {
-        $this->renderer = new Renderer();
+        $this->writer = new Writer();
     }
 
     protected function tearDown()
     {
-        $this->renderer = null;
+        $this->writer = null;
     }
 
-    public function testRender()
+    public function testWrite()
+    {
+        $destination = tempnam(sys_get_temp_dir(), 'xlsx');
+
+        $document = $this->createDocument();
+
+        $this->writer->write($document, $destination);
+        //Missing asserts and etc
+    }
+
+    public function testMemoryIsNotLeaking()
+    {
+        $destination = tempnam(sys_get_temp_dir(), 'xlsx');
+
+        // 1MB allowed to be used
+        $allowedConsumption = 1024 * 1024;
+        $beforeExecution = memory_get_usage();
+        $memoryLimit = $beforeExecution + $allowedConsumption;
+
+        $document = $this->createDocument();
+        $this->writer->write($document, $destination);
+
+        $consumed = memory_get_usage();
+        $this->assertLessThan(
+            $memoryLimit,
+            $consumed,
+            sprintf(
+                'Processing consumes too much memory. Upper limit was %d bytes but used %d',
+                $beforeExecution,
+                $consumed
+            )
+        );
+    }
+
+    private function createDocument()
     {
         $document = $this->createMock(DocumentInterface::class);
         $pages = [
@@ -77,6 +111,6 @@ class RendererTest extends TestCase
             }
         }
 
-        $this->renderer->render($document);
+        return $document;
     }
 }
