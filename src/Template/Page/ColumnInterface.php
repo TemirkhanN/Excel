@@ -10,7 +10,7 @@ interface ColumnInterface
     /**
      * Returns contained value
      *
-     * @return mixed
+     * @return int|float|string|bool
      */
     public function getValue();
 }
